@@ -10,13 +10,13 @@ class DataQualityOperator(BaseOperator):
     def __init__(self,
                  # Define  operators params (with defaults) 
                  redshift_conn_id = '', # Connection ID for the Redshift cluster
-                 data_quality_check = [], # Description of the data quality check being performed
+
                  *args, **kwargs):
 
         super(DataQualityOperator, self).__init__(*args, **kwargs)
         # Map params
         self.redshift_conn_id = redshift_conn_id
-        self.data_quality_check = data_quality_check
+
 
     def execute(self, context):
         self.log.info('Starting the S3ToRedshiftOperator...')  # Log that the task is starting
