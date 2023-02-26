@@ -9,9 +9,18 @@ FROM helpers import SqlQueries
 # AWS_KEY = os.environ.get('AWS_KEY')
 # AWS_SECRET = os.environ.get('AWS_SECRET')
 
+# Review on default_args
+# The DAG does not have dependencies on past runs [False]
+# On failure, the task are retried 3 times
+# Retries happen every 5 minutes
+# Catchup is turned off [False]
 default_args = {
     'owner': 'udacity',
     'start_date': datetime(2019, 1, 12),
+    'depends_on_past': False,
+    'retries': 3,
+    'retry_stop': timedelta(minutes=5),
+    'catchup': False
 }
 
 dag = DAG('udac_example_dag',
