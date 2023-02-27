@@ -10,12 +10,13 @@ class DataQualityOperator(BaseOperator):
     def __init__(self,
                  # Define  operators params (with defaults) 
                  redshift_conn_id = '', # Connection ID for the Redshift cluster
-
+                 check_data_quality = '',
                  *args, **kwargs):
 
         super(DataQualityOperator, self).__init__(*args, **kwargs)
         # Map params
         self.redshift_conn_id = redshift_conn_id
+        self.check_data_quality = check_data_quality
 
 
     def execute(self, context):
@@ -38,6 +39,13 @@ class DataQualityOperator(BaseOperator):
         check_songplays_task = check_greater_than_zero(params={'table': 'songplays'})
         check_songs_task = check_greater_than_zero(params={'table': 'songs'})
         check_artists_task = check_greater_than_zero(params={'table': 'artists'})
+
+        for check in self.check_data_quality:
+            check_sql = check.get('data_check')
+            exepected_result =  check.get('expected_value')
+            redshift_result = redshift.get_records(check_sql)[0]
+            if redshift_result != exepected_result:
+                self.log.info('Fail Data Quality Check')
 
         
 
