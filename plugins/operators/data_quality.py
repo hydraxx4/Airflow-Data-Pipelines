@@ -26,7 +26,7 @@ class DataQualityOperator(BaseOperator):
 
         
 
-        for check in self.check_data_quality:
+        for check in self.data_quality_checks:
             check_sql = check.get('data_check')
             exepected_result =  check.get('expected_value')
             redshift_result = redshift.get_records(check_sql)[0]
