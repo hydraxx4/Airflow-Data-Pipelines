@@ -19,7 +19,7 @@ default_args = {
     'start_date': datetime(2019, 1, 12),
     'depends_on_past': False,
     'retries': 3,
-    'retry_stop': timedelta(minutes=5),
+    'retry_delay': timedelta(minutes=5),
     'catchup': False
 }
 
@@ -81,7 +81,7 @@ load_song_dimension_table = LoadDimensionOperator(
     redshift_conn_id = 'redshift',
     table = 'songs',
     sql = SqlQueries.song_table_insert,
-    operation='truncate'
+    truncate_table=True
 )
 
 load_artist_dimension_table = LoadDimensionOperator(
@@ -90,7 +90,7 @@ load_artist_dimension_table = LoadDimensionOperator(
     redshift_conn_id = 'redshift',
     table = 'artists',
     sql = SqlQueries.artist_table_insert,
-    operation='truncate'
+    truncate_table=True
 )
 
 load_time_dimension_table = LoadDimensionOperator(
@@ -99,7 +99,7 @@ load_time_dimension_table = LoadDimensionOperator(
     redshift_conn_id = 'redshift',
     table = 'time',
     sql = SqlQueries.time_table_insert,
-    operation='truncate'
+    truncate_table=True
 )
 
 run_quality_checks = DataQualityOperator(
